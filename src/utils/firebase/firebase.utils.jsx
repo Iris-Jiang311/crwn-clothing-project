@@ -1,5 +1,5 @@
 import {initializeApp} from 'firebase/app'
-import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword} from 'firebase/auth'
+import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
 import {getFirestore, doc, getDoc, setDoc} from 'firebase/firestore'
 //getDoc: getting documents data  setDoc: setting documents data 
 
@@ -17,14 +17,14 @@ const firebaseConfig = {
   // Initialize Firebase
   const firebaseApp = initializeApp(firebaseConfig);
 
-  const googleRrovider = new GoogleAuthProvider()
-  googleRrovider.setCustomParameters({
+  const googleProvider = new GoogleAuthProvider()
+  googleProvider.setCustomParameters({
     prompt: "select_account"
   })
 
   export const auth = getAuth()
-  export const signInWithGooglePopup = ()=> signInWithPopup(auth, googleRrovider)
-  export const signInWithGoogleRedirect = ()=> signInWithRedirect(auth, googleRrovider)
+  export const signInWithGooglePopup = ()=> signInWithPopup(auth, googleProvider)
+  export const signInWithGoogleRedirect = ()=> signInWithRedirect(auth, googleProvider)
   // can have different provider: e.g. facebook or github
 
   export const db = getFirestore()
@@ -57,4 +57,11 @@ const firebaseConfig = {
     
     return await createUserWithEmailAndPassword(auth, email, password)
    
+  }
+
+  export const signAuthInWithEmailAndPassword = async (email,password)=>{
+    // if do not receive any articles, do not run the function    
+    if(!email || !password) return
+    
+    return await signInWithEmailAndPassword(auth, email, password)
   }
